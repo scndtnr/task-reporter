@@ -11,3 +11,6 @@ Cargo.lock
 
 # local history
 .history
+
+# log file
+log
