@@ -1,7 +1,7 @@
 #[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord)]
 pub(crate) struct ByTaskAndTotalDto {
     // 最終更新日時
-    update: String,
+    updated_at: String,
     // チャージコード
     charge_name: String,
     // タスクのステータス

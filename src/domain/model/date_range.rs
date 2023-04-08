@@ -5,7 +5,7 @@ use std::str::FromStr;
 
 use super::Jst;
 use anyhow::{bail, Error, Ok, Result};
-use chrono::{DateTime, Duration, FixedOffset, NaiveDate, NaiveTime};
+use chrono::{DateTime, Duration, FixedOffset, NaiveDate, NaiveTime, Timelike};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct DateRange {
@@ -76,17 +76,27 @@ impl DateRange {
     pub fn end_unixtime_millis(&self) -> i64 {
         self.end_dt.0.timestamp_millis()
     }
-    /// 指定の始端日～終端日から日付文字列のベクトルを得る
+    /// 指定の始端日～終端日からNaiveDateのベクトルを得る
     /// ※終端日は指定通りにするため-1日の補正をかけている
     /// e.g. vec!["2022/10/19".to_string(), "2022/10/20".to_string()]
-    pub fn vec_dates_str(&self) -> Vec<String> {
+    pub fn vec_dates_str(&self) -> Vec<NaiveDate> {
         let start_date = self.start_dt.0.date_naive();
         let end_date = self.end_dt.0.date_naive() + Duration::days(-1);
         start_date
             .iter_days()
             .take_while(|date| date <= &end_date)
-            .map(|date| date.format("%Y/%m/%d").to_string())
+            // .map(|date| date.format("%Y/%m/%d").to_string())
             .collect()
+    }
+
+    /// 対象のDateTimeをNaiveDateに変換する
+    /// ただし、1日の始まりは午前5時とする
+    pub(crate) fn convert_datetime_to_date(dt: DateTime<FixedOffset>) -> NaiveDate {
+        if dt.hour() >= 5 {
+            dt.date_naive()
+        } else {
+            dt.date_naive() - Duration::days(-1)
+        }
     }
 }
 

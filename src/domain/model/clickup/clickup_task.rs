@@ -1,5 +1,5 @@
 use super::values::ClickupDuration;
-use crate::domain::model::Jst;
+use crate::domain::model::{DateRange, Jst, TaskRecord};
 
 use chrono::{DateTime, FixedOffset};
 
@@ -39,5 +39,20 @@ impl ClickupTask {
 impl PartialEq for ClickupTask {
     fn eq(&self, other: &Self) -> bool {
         self.task_id == other.task_id
+    }
+}
+
+impl From<ClickupTask> for TaskRecord {
+    fn from(clickup_task: ClickupTask) -> Self {
+        Self {
+            task_id: clickup_task.task_id,
+            task_name: clickup_task.task_name,
+            task_url: clickup_task.task_url,
+            task_status: clickup_task.task_status,
+            charge_name: clickup_task.parent_list_name,
+            duration: clickup_task.duration.as_duration(),
+            target_date: DateRange::convert_datetime_to_date(clickup_task.updated_at),
+            updated_at: clickup_task.updated_at,
+        }
     }
 }

@@ -2,7 +2,7 @@ extern crate chrono;
 
 use super::values::ClickupDuration;
 use super::ClickupTask;
-use crate::domain::model::AsVec;
+use crate::domain::model::{task_records::TaskRecords, AsVec};
 use chrono::{DateTime, FixedOffset};
 use std::collections::HashMap;
 
@@ -19,6 +19,18 @@ impl AsVec for ClickupTasks {
     }
     fn as_mut_vec(&mut self) -> &mut Vec<Self::Item> {
         &mut self.0
+    }
+}
+
+impl From<ClickupTasks> for TaskRecords {
+    fn from(clickup_tasks: ClickupTasks) -> Self {
+        Self::new(
+            clickup_tasks
+                .into_inner()
+                .into_iter()
+                .map(|task| task.into())
+                .collect(),
+        )
     }
 }
 
