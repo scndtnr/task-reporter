@@ -1,20 +1,29 @@
 mod options;
 
 use super::adapter::dto::RequestDto;
-use crate::{adapter::Controller, cui::options::AggregateCondition};
+use crate::{
+    adapter::Controller,
+    cui::options::AggregateCondition,
+    infra::{repository_impl::RepositoryImpls, web::BasicClient},
+    usecase::UsecaseImpls,
+};
 use clap::Parser;
 pub(super) use options::Opts;
 
 #[derive(Debug, Clone)]
 pub(super) struct Cui {
-    controller: Controller,
+    controller: Controller<UsecaseImpls>,
     opts: Opts,
 }
 
 impl Cui {
     pub(super) async fn new() -> Self {
+        let client = BasicClient::new();
+        let repositories = RepositoryImpls::new(client);
+        let usecases = UsecaseImpls::new(repositories);
+        let controller = Controller::new(usecases).await;
         Self {
-            controller: Controller::new().await,
+            controller,
             opts: Opts::parse(),
         }
     }

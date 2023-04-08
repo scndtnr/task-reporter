@@ -4,6 +4,7 @@ mod domain;
 mod env;
 mod infra;
 mod logging;
+mod usecase;
 
 pub async fn init() {
     env::set_dotenv("task-reporter");
