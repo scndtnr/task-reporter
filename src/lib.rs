@@ -2,6 +2,7 @@ mod adapter;
 mod cui;
 mod domain;
 mod env;
+mod infra;
 mod logging;
 
 pub async fn init() {

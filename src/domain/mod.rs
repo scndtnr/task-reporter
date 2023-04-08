@@ -1,2 +1,2 @@
-mod model;
-mod repository;
+pub(super) mod model;
+pub(super) mod repository;
