@@ -16,13 +16,13 @@ impl<'a, U: Usecases> Controller<U> {
         &self,
         dto: RequestDto,
     ) -> ByTaskAndTotalDtos {
-        let task_records = self
+        let records = self
             .usecases
             .aggregate_duration_use_case()
             .by_task_and_total_period(dto.start_date().clone(), dto.end_date().clone())
             .await
             .expect("Failed to process AggregateDurationUsecase: by_task_and_total_period");
-        tracing::debug!("{:#?}", task_records);
+        tracing::debug!("{:#?}", records);
         todo!();
     }
 

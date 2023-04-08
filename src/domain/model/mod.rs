@@ -1,3 +1,4 @@
+pub(crate) mod aggregated_by;
 mod as_vec;
 pub(crate) mod clickup;
 mod date_range;

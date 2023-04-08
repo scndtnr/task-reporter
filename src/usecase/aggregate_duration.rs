@@ -1,5 +1,5 @@
 use crate::domain::{
-    model::{DateRange, TaskRecords},
+    model::{aggregated_by::TaskAndTotalPeriodRecords, DateRange, TaskRecords},
     repository::{ClickupTaskRepository, ClickupTimeEntryRepository, Repositories},
 };
 use anyhow::Result;
@@ -17,7 +17,7 @@ impl<R: Repositories> AggregateDurationUseCase<R> {
         &self,
         start_date: Option<T>,
         end_date: Option<T>,
-    ) -> Result<TaskRecords> {
+    ) -> Result<TaskAndTotalPeriodRecords> {
         let date_range = DateRange::new(start_date, end_date);
         let tasks = self.task_repo.find_tasks_by_date_range(&date_range).await?;
         let time_entries = self
@@ -29,7 +29,6 @@ impl<R: Repositories> AggregateDurationUseCase<R> {
         let records_from_time_entries: TaskRecords = time_entries.into();
         let records = records_from_tasks.concat(&records_from_time_entries);
 
-        Ok(records)
-        // Ok(tasks.merge_tasks(&mut time_entries.to_tasks()))
+        Ok(TaskAndTotalPeriodRecords::new(date_range, records))
     }
 }

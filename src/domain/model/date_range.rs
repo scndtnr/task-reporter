@@ -1,6 +1,3 @@
-extern crate chrono;
-extern crate regex;
-
 use std::str::FromStr;
 
 use super::Jst;
@@ -14,7 +11,7 @@ pub struct DateRange {
 }
 
 impl DateRange {
-    pub fn new<T: Into<String>>(start_date: Option<T>, end_date: Option<T>) -> Self {
+    pub(crate) fn new<T: Into<String>>(start_date: Option<T>, end_date: Option<T>) -> Self {
         // 日付文字列のパース
         let start = match start_date {
             Some(date) => TargetDate::from_str(&date.into()).unwrap(),
@@ -46,40 +43,40 @@ impl DateRange {
             Ok(())
         }
     }
-    pub fn start(&self) -> DateTime<FixedOffset> {
+    pub(crate) fn start(&self) -> DateTime<FixedOffset> {
         self.start_dt.0
     }
-    pub fn end(&self) -> DateTime<FixedOffset> {
+    pub(crate) fn end(&self) -> DateTime<FixedOffset> {
         self.end_dt.0
     }
-    pub fn start_date_str(&self) -> String {
+    pub(crate) fn start_date_str(&self) -> String {
         self.start_dt.0.format("%Y/%m/%d").to_string()
     }
-    pub fn start_datetime_str(&self) -> String {
+    pub(crate) fn start_datetime_str(&self) -> String {
         self.start_dt.0.format("%Y/%m/%dT%H:%M:%S").to_string()
     }
-    pub fn start_unixtime_sec(&self) -> i64 {
+    pub(crate) fn start_unixtime_sec(&self) -> i64 {
         self.start_dt.0.timestamp()
     }
-    pub fn start_unixtime_millis(&self) -> i64 {
+    pub(crate) fn start_unixtime_millis(&self) -> i64 {
         self.start_dt.0.timestamp_millis()
     }
-    pub fn end_date_str(&self) -> String {
+    pub(crate) fn end_date_str(&self) -> String {
         self.end_dt.0.format("%Y/%m/%d").to_string()
     }
-    pub fn end_datetime_str(&self) -> String {
+    pub(crate) fn end_datetime_str(&self) -> String {
         self.end_dt.0.format("%Y/%m/%dT%H:%M:%S").to_string()
     }
-    pub fn end_unixtime_sec(&self) -> i64 {
+    pub(crate) fn end_unixtime_sec(&self) -> i64 {
         self.end_dt.0.timestamp()
     }
-    pub fn end_unixtime_millis(&self) -> i64 {
+    pub(crate) fn end_unixtime_millis(&self) -> i64 {
         self.end_dt.0.timestamp_millis()
     }
     /// 指定の始端日～終端日からNaiveDateのベクトルを得る
     /// ※終端日は指定通りにするため-1日の補正をかけている
     /// e.g. vec!["2022/10/19".to_string(), "2022/10/20".to_string()]
-    pub fn vec_dates_str(&self) -> Vec<NaiveDate> {
+    pub(crate) fn vec_dates_str(&self) -> Vec<NaiveDate> {
         let start_date = self.start_dt.0.date_naive();
         let end_date = self.end_dt.0.date_naive() + Duration::days(-1);
         start_date
@@ -87,6 +84,11 @@ impl DateRange {
             .take_while(|date| date <= &end_date)
             // .map(|date| date.format("%Y/%m/%d").to_string())
             .collect()
+    }
+
+    /// start_date と end_date が同じ1日を表しているか判定
+    pub(crate) fn is_same_date(&self) -> bool {
+        self.start_dt.0.date_naive() == self.end_dt.0.date_naive() + Duration::days(-1)
     }
 
     /// 対象のDateTimeをNaiveDateに変換する

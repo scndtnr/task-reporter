@@ -1,4 +1,4 @@
-use super::{task_record, AsVec, TaskRecord};
+use super::{AsVec, TaskRecord};
 
 #[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord)]
 pub(crate) struct TaskRecords(Vec<TaskRecord>);
