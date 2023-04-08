@@ -1,5 +1,5 @@
 mod as_vec;
-mod clickup;
+pub(crate) mod clickup;
 mod date_range;
 mod jst;
 
