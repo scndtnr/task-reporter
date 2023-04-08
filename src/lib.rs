@@ -1,5 +1,6 @@
 mod adapter;
 mod cui;
+mod domain;
 mod env;
 mod logging;
 
