@@ -44,10 +44,12 @@ impl ClickupApi {
         &self.team_ident
     }
 
+    #[allow(unused)]
     pub(crate) async fn teams(&self, params: Option<ApiParams>) -> ClickupResponse {
         self.send_get("/api/v2/team", params).await.into()
     }
 
+    #[allow(unused)]
     pub(crate) async fn user(
         &self,
         user_id: impl Into<String>,
@@ -61,12 +63,14 @@ impl ClickupApi {
         .into()
     }
 
+    #[allow(unused)]
     pub(crate) async fn spaces(&self, params: Option<ApiParams>) -> ClickupResponse {
         self.send_get(&format!("/api/v2/team/{}/space?", self.team_id()), params)
             .await
             .into()
     }
 
+    #[allow(unused)]
     pub(crate) async fn folders(
         &self,
         space_id: impl Into<String>,
@@ -80,6 +84,7 @@ impl ClickupApi {
         .into()
     }
 
+    #[allow(unused)]
     pub(crate) async fn folderless_lists(
         &self,
         space_id: impl Into<String>,
@@ -90,6 +95,7 @@ impl ClickupApi {
             .into()
     }
 
+    #[allow(unused)]
     pub(crate) async fn lists(
         &self,
         folder_id: impl Into<String>,
@@ -103,6 +109,7 @@ impl ClickupApi {
         .into()
     }
 
+    #[allow(unused)]
     pub(crate) async fn list(
         &self,
         list_id: impl Into<String>,
@@ -113,6 +120,7 @@ impl ClickupApi {
             .into()
     }
 
+    #[allow(unused)]
     pub(crate) async fn tasks(
         &self,
         list_id: impl Into<String>,
@@ -123,6 +131,7 @@ impl ClickupApi {
             .into()
     }
 
+    #[allow(unused)]
     pub(crate) async fn task(
         &self,
         task_id: impl Into<String>,
@@ -151,6 +160,7 @@ impl ClickupApi {
         .into()
     }
 
+    #[allow(unused)]
     pub(crate) async fn stop_a_time_entry(&self, params: Option<ApiParams>) -> ClickupResponse {
         self.send_post(
             &format!("/api/v2/team/{}/time_entries/stop", self.team_id()),

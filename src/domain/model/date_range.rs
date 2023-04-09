@@ -55,12 +55,12 @@ impl DateRange {
     pub(crate) fn start_datetime_str(&self) -> String {
         self.start_dt.0.format("%Y/%m/%dT%H:%M:%S").to_string()
     }
-    pub(crate) fn start_unixtime_sec(&self) -> i64 {
-        self.start_dt.0.timestamp()
-    }
+    /// テスト時にWebAPIのパラメータ指定に利用している
+    #[allow(unused)]
     pub(crate) fn start_unixtime_millis(&self) -> i64 {
         self.start_dt.0.timestamp_millis()
     }
+    #[allow(unused)]
     pub(crate) fn end_date_str(&self) -> String {
         self.end_dt.0.format("%Y/%m/%d").to_string()
     }
@@ -72,23 +72,10 @@ impl DateRange {
     pub(crate) fn end_datetime_str(&self) -> String {
         self.end_dt.0.format("%Y/%m/%dT%H:%M:%S").to_string()
     }
-    pub(crate) fn end_unixtime_sec(&self) -> i64 {
-        self.end_dt.0.timestamp()
-    }
+    /// テスト時にWebAPIのパラメータ指定に利用している
+    #[allow(unused)]
     pub(crate) fn end_unixtime_millis(&self) -> i64 {
         self.end_dt.0.timestamp_millis()
-    }
-    /// 指定の始端日～終端日からNaiveDateのベクトルを得る
-    /// ※終端日は指定通りにするため-1日の補正をかけている
-    /// e.g. vec!["2022/10/19".to_string(), "2022/10/20".to_string()]
-    pub(crate) fn vec_dates_str(&self) -> Vec<NaiveDate> {
-        let start_date = self.start_dt.0.date_naive();
-        let end_date = self.end_dt.0.date_naive() + Duration::days(-1);
-        start_date
-            .iter_days()
-            .take_while(|date| date <= &end_date)
-            // .map(|date| date.format("%Y/%m/%d").to_string())
-            .collect()
     }
 
     /// start_date と end_date が同じ1日を表しているか判定
@@ -322,22 +309,6 @@ mod tests {
         fn check_end_hhmiss() {
             let end = EndDateTime::from(Jst::today());
             assert_eq!(end.0.time(), NaiveTime::from_hms_opt(4, 59, 59).unwrap());
-        }
-    }
-
-    mod test_of_date_range {
-        use super::*;
-
-        #[test]
-        fn check_vec_days_by_single_date() {
-            let date_range = DateRange::new(Some("2012/12/31"), None);
-            dbg!(date_range.vec_dates_str());
-        }
-
-        #[test]
-        fn check_vec_days_by_period() {
-            let date_range = DateRange::new(Some("2012/12/31"), Some("2013/01/02"));
-            dbg!(date_range.vec_dates_str());
         }
     }
 }

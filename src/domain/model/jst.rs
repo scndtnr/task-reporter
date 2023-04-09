@@ -47,16 +47,8 @@ impl Jst {
         }
     }
 
-    pub(crate) fn timestamp(secs: i64, nsecs: u32) -> DateTime<FixedOffset> {
-        Self::offset().timestamp_opt(secs, nsecs).unwrap()
-    }
-
     pub(crate) fn timestamp_millis(millis: i64) -> DateTime<FixedOffset> {
         Self::offset().timestamp_millis_opt(millis).unwrap()
-    }
-
-    pub(crate) fn timestamp_nanos(nanos: i64) -> DateTime<FixedOffset> {
-        Self::offset().timestamp_nanos(nanos)
     }
 }
 

@@ -3,6 +3,8 @@ use std::collections::HashMap;
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub(crate) enum ApiParams {
     QueryString(Vec<(String, Option<String>)>),
+
+    #[allow(unused)]
     RequestBody(String),
 }
 
