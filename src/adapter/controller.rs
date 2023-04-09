@@ -1,6 +1,6 @@
-use crate::usecase::Usecases;
+use crate::{domain::model::aggregated_by::TaskAndTotalPeriodRecords, usecase::Usecases};
 
-use super::dto::{ByTaskAndTotalDtos, RequestDto};
+use super::dto::RequestDto;
 
 #[derive(Debug, Clone)]
 pub(crate) struct Controller<U> {
@@ -15,15 +15,12 @@ impl<'a, U: Usecases> Controller<U> {
     pub(crate) async fn aggregate_by_task_and_total_period(
         &self,
         dto: RequestDto,
-    ) -> ByTaskAndTotalDtos {
-        let records = self
-            .usecases
+    ) -> TaskAndTotalPeriodRecords {
+        self.usecases
             .aggregate_duration_use_case()
             .by_task_and_total_period(dto.start_date().clone(), dto.end_date().clone())
             .await
-            .expect("Failed to process AggregateDurationUsecase: by_task_and_total_period");
-        tracing::debug!("{:#?}", records);
-        todo!();
+            .expect("Failed to process AggregateDurationUsecase: by_task_and_total_period")
     }
 
     pub(crate) async fn aggregate_by_charge_and_total_period(&self, dto: RequestDto) {

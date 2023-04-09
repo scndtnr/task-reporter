@@ -30,6 +30,7 @@ impl<T> ClickupRepositoryImpl<T> {
 impl ClickupTaskRepository for ClickupRepositoryImpl<ClickupTask> {
     #[tracing::instrument(
         name="find_tasks",
+        level="debug",
         skip_all,
         fields(
             start=%date_range.start_datetime_str(),
@@ -87,6 +88,7 @@ impl ClickupTaskRepository for ClickupRepositoryImpl<ClickupTask> {
 impl ClickupTimeEntryRepository for ClickupRepositoryImpl<ClickupTimeEntry> {
     #[tracing::instrument(
         name="find_time_entries",
+        level="debug",
         skip_all,
         fields(
             start=%date_range.start_datetime_str(),

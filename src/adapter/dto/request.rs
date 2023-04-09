@@ -4,8 +4,6 @@ use crate::cui::Opts;
 pub(crate) struct RequestDto {
     start_date: Option<String>,
     end_date: Option<String>,
-    by_charge: bool,
-    by_daily: bool,
 }
 
 impl RequestDto {
@@ -15,12 +13,6 @@ impl RequestDto {
     pub(crate) fn end_date(&self) -> &Option<String> {
         &self.end_date
     }
-    pub(crate) fn by_charge(&self) -> bool {
-        self.by_charge
-    }
-    pub(crate) fn by_daily(&self) -> bool {
-        self.by_daily
-    }
 }
 
 impl From<Opts> for RequestDto {
@@ -28,8 +20,6 @@ impl From<Opts> for RequestDto {
         Self {
             start_date: opts.start_date().clone(),
             end_date: opts.end_date().clone(),
-            by_charge: opts.by_charge(),
-            by_daily: opts.by_daily(),
         }
     }
 }

@@ -12,7 +12,7 @@ pub(crate) struct AggregateDurationUseCase<R: Repositories> {
 }
 
 impl<R: Repositories> AggregateDurationUseCase<R> {
-    #[tracing::instrument(skip_all)]
+    #[tracing::instrument(level = "debug", skip_all)]
     pub(crate) async fn by_task_and_total_period<T: Into<String>>(
         &self,
         start_date: Option<T>,

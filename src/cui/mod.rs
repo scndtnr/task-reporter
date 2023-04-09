@@ -41,11 +41,11 @@ impl Cui {
 
     pub(super) async fn by_task_and_total_period(&self, dto: RequestDto) {
         tracing::debug!("by_task_and_total_period");
-        let dto = self
+        let result = self
             .controller
             .aggregate_by_task_and_total_period(dto)
             .await;
-        todo!();
+        tracing::info!("{}", result);
     }
 
     pub(super) async fn by_charge_and_total_period(&self, dto: RequestDto) {
