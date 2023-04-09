@@ -442,7 +442,7 @@ mod tests {
     #[tokio::test]
     async fn check_filtered_team_tasks() {
         // 事前準備
-        let dr = DateRange::new(Some("2022/01/05"), None);
+        let dr = DateRange::new(Some("2023/04/03"), None);
         let client = ClickupClient::new(BasicClient::new());
         let params = client.params().filterd_team_tasks(
             0,
@@ -456,10 +456,7 @@ mod tests {
         let resp = client.api().filtered_team_tasks(Some(params)).await;
         let tasks = resp.try_to_clickup_tasks().unwrap();
         dbg!(&tasks);
-        assert_eq!(
-            tasks.tasks[0].name.as_str(),
-            "Slackアプリ上で実行するAggregator処理を本実装する（ダミーと置き換える）"
-        )
+        assert_eq!(tasks.tasks[0].name.as_str(), "請求書をメール送付する")
     }
     #[tokio::test]
     async fn check_time_entries_within_a_date_range() {
