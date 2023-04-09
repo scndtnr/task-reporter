@@ -17,8 +17,8 @@ impl std::fmt::Display for ChargeAndDailyRecord {
         write!(
             f,
             "{}\t{}\t{}\t{}",
-            self.target_date,
-            self.updated_at.format("%Y/%m/%dT%H:%M:%S"),
+            self.target_date.format("%Y/%m/%d"),
+            self.updated_at.format("%Y/%m/%d %H:%M:%S"),
             self.total_duration,
             self.charge_name,
         )
