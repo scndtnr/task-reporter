@@ -39,8 +39,10 @@ impl Cui {
             AggregateCondition::ChargeAndDaily => self.by_charge_and_daily(dto).await,
         };
 
-        // クリップボードにコピーする（Windows限定）
-        set_clipboard(formats::Unicode, result.to_string()).expect("Fail to set clipboard.");
+        if self.opts.set_clipboard() {
+            // クリップボードにコピーする（Windows限定）
+            set_clipboard(formats::Unicode, result.to_string()).expect("Fail to set clipboard.");
+        }
 
         // ログ出力する
         tracing::info!("{}", result);

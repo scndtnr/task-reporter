@@ -18,6 +18,8 @@ pub(crate) struct Opts {
     by_charge: bool,
     #[clap(short = 'd', long, help = "日単位で集計するboolフラグ")]
     by_daily: bool,
+    #[clap(short = 's', long, help = "結果をクリップボードにセットするboolフラグ")]
+    set_clipboard: bool,
 }
 
 impl Opts {
@@ -32,6 +34,9 @@ impl Opts {
     }
     pub(crate) fn by_daily(&self) -> bool {
         self.by_daily
+    }
+    pub(crate) fn set_clipboard(&self) -> bool {
+        self.set_clipboard
     }
 }
 
