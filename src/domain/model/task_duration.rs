@@ -28,7 +28,8 @@ impl From<Option<&str>> for TaskDuration {
 impl std::fmt::Display for TaskDuration {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if self.as_duration().is_zero() {
-            write!(f, "")
+            // write!(f, "n/a")
+            write!(f, "00:00:00")
         } else {
             let sec = self.as_duration().num_seconds() % (60);
             let minute = self.as_duration().num_minutes() % (60);

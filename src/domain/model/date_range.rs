@@ -64,6 +64,11 @@ impl DateRange {
     pub(crate) fn end_date_str(&self) -> String {
         self.end_dt.0.format("%Y/%m/%d").to_string()
     }
+    pub(crate) fn end_target_date_str(&self) -> String {
+        (self.end_dt.0.date_naive() + Duration::days(-1))
+            .format("%Y/%m/%d")
+            .to_string()
+    }
     pub(crate) fn end_datetime_str(&self) -> String {
         self.end_dt.0.format("%Y/%m/%dT%H:%M:%S").to_string()
     }
