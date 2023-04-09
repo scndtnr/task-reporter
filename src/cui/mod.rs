@@ -8,6 +8,7 @@ use crate::{
     usecase::UsecaseImpls,
 };
 use clap::Parser;
+use clipboard_win::{formats, set_clipboard};
 pub(super) use options::Opts;
 
 #[derive(Debug, Clone)]
@@ -31,41 +32,49 @@ impl Cui {
     pub(super) async fn process(&self) {
         tracing::debug!("cli args: {:#?}", self.opts);
         let dto: RequestDto = self.opts.clone().into();
-        match self.opts.clone().into() {
+        let result = match self.opts.clone().into() {
             AggregateCondition::TaskAndTotalPeriod => self.by_task_and_total_period(dto).await,
             AggregateCondition::ChargeAndTotalPeriod => self.by_charge_and_total_period(dto).await,
             AggregateCondition::TaskAndDaily => self.by_task_and_daily(dto).await,
             AggregateCondition::ChargeAndDaily => self.by_charge_and_daily(dto).await,
-        }
+        };
+
+        // クリップボードにコピーする（Windows限定）
+        set_clipboard(formats::Unicode, result.to_string()).expect("Fail to set clipboard.");
+
+        // ログ出力する
+        tracing::info!("{}", result);
     }
 
-    pub(super) async fn by_task_and_total_period(&self, dto: RequestDto) {
+    pub(super) async fn by_task_and_total_period(&self, dto: RequestDto) -> String {
         tracing::debug!("by_task_and_total_period");
-        let result = self
-            .controller
+        self.controller
             .aggregate_by_task_and_total_period(dto)
-            .await;
-        tracing::info!("{}", result);
+            .await
+            .to_string()
     }
 
-    pub(super) async fn by_task_and_daily(&self, dto: RequestDto) {
+    pub(super) async fn by_task_and_daily(&self, dto: RequestDto) -> String {
         tracing::debug!("by_task_and_daily");
-        let result = self.controller.aggregate_by_task_and_daily(dto).await;
-        tracing::info!("{}", result);
+        self.controller
+            .aggregate_by_task_and_daily(dto)
+            .await
+            .to_string()
     }
 
-    pub(super) async fn by_charge_and_total_period(&self, dto: RequestDto) {
+    pub(super) async fn by_charge_and_total_period(&self, dto: RequestDto) -> String {
         tracing::debug!("by_charge_and_total_period");
-        let result = self
-            .controller
+        self.controller
             .aggregate_by_charge_and_total_period(dto)
-            .await;
-        tracing::info!("{}", result);
+            .await
+            .to_string()
     }
 
-    pub(super) async fn by_charge_and_daily(&self, dto: RequestDto) {
+    pub(super) async fn by_charge_and_daily(&self, dto: RequestDto) -> String {
         tracing::debug!("by_charge_and_daily");
-        let result = self.controller.aggregate_by_charge_and_daily(dto).await;
-        tracing::info!("{}", result);
+        self.controller
+            .aggregate_by_charge_and_daily(dto)
+            .await
+            .to_string()
     }
 }
