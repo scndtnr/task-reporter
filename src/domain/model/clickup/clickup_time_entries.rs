@@ -1,10 +1,10 @@
 extern crate chrono;
 
-use crate::domain::model::{task_records::TaskRecords, AsVec, DateRange};
+use crate::domain::model::{AsVec, DateRange, TaskDuration, TaskRecords};
 use chrono::{DateTime, FixedOffset};
 use std::collections::HashMap;
 
-use super::{values::ClickupDuration, ClickupTask, ClickupTasks, ClickupTimeEntry};
+use super::{ClickupTask, ClickupTasks, ClickupTimeEntry};
 
 #[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord)]
 pub struct ClickupTimeEntries(Vec<ClickupTimeEntry>);
@@ -103,13 +103,12 @@ impl ClickupTimeEntries {
             te.end,
         )
     }
-    fn sum_duration(&self, te_group: &[ClickupTimeEntry]) -> ClickupDuration {
+    fn sum_duration(&self, te_group: &[ClickupTimeEntry]) -> TaskDuration {
         te_group
             .iter()
-            .map(|te| te.duration)
-            .reduce(|accum, duration| accum + duration)
+            .map(|te| TaskDuration::new(te.duration))
+            .reduce(|accum, duration| accum.add(duration))
             .unwrap()
-            .into()
     }
 }
 

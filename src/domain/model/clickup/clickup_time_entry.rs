@@ -1,4 +1,4 @@
-use crate::domain::model::{task_record::TaskRecord, DateRange, Jst, TaskDuration};
+use crate::domain::model::{DateRange, Jst, TaskDuration, TaskRecord};
 
 use chrono::{DateTime, Duration, FixedOffset};
 

@@ -1,8 +1,7 @@
 extern crate chrono;
 
-use super::values::ClickupDuration;
 use super::ClickupTask;
-use crate::domain::model::{task_records::TaskRecords, AsVec};
+use crate::domain::model::{AsVec, TaskDuration, TaskRecords};
 use chrono::{DateTime, FixedOffset};
 use std::collections::HashMap;
 
@@ -104,11 +103,11 @@ impl ClickupTasks {
         )
     }
 
-    fn sum_duration(&self, tasks: &[ClickupTask]) -> ClickupDuration {
+    fn sum_duration(&self, tasks: &[ClickupTask]) -> TaskDuration {
         tasks
             .iter()
             .map(|task| task.duration.clone())
-            .fold(ClickupDuration::new(None), |accum, duration| {
+            .fold(TaskDuration::from(None), |accum, duration| {
                 accum.add(duration)
             })
     }

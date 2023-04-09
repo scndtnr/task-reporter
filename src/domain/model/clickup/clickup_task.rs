@@ -1,17 +1,16 @@
-use super::values::ClickupDuration;
 use crate::domain::model::{DateRange, Jst, TaskDuration, TaskRecord};
 
 use chrono::{DateTime, FixedOffset};
 
 #[derive(Debug, Clone, Eq, PartialOrd, Ord)]
 pub struct ClickupTask {
-    pub task_id: String,
-    pub task_name: String,
-    pub task_url: String,
-    pub task_status: String,
-    pub parent_list_name: String,
-    pub duration: ClickupDuration,
-    pub updated_at: DateTime<FixedOffset>,
+    pub(crate) task_id: String,
+    pub(crate) task_name: String,
+    pub(crate) task_url: String,
+    pub(crate) task_status: String,
+    pub(crate) parent_list_name: String,
+    pub(crate) duration: TaskDuration,
+    pub(crate) updated_at: DateTime<FixedOffset>,
 }
 
 impl ClickupTask {
@@ -30,7 +29,7 @@ impl ClickupTask {
             task_url: task_url.into(),
             task_status: task_status.into(),
             parent_list_name: list_name.into(),
-            duration: ClickupDuration::new(duration),
+            duration: TaskDuration::from(duration),
             updated_at: Jst::timestamp_millis(updated_at.parse::<i64>().unwrap()),
         }
     }
@@ -50,7 +49,7 @@ impl From<ClickupTask> for TaskRecord {
             task_url: clickup_task.task_url,
             task_status: clickup_task.task_status,
             charge_name: clickup_task.parent_list_name,
-            duration: TaskDuration::new(clickup_task.duration.as_duration()),
+            duration: clickup_task.duration,
             target_date: DateRange::convert_datetime_to_date(clickup_task.updated_at),
             updated_at: clickup_task.updated_at,
         }
