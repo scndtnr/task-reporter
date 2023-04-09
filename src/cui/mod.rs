@@ -48,18 +48,24 @@ impl Cui {
         tracing::info!("{}", result);
     }
 
-    pub(super) async fn by_charge_and_total_period(&self, dto: RequestDto) {
-        tracing::debug!("by_charge_and_total_period");
-        todo!();
-    }
-
     pub(super) async fn by_task_and_daily(&self, dto: RequestDto) {
         tracing::debug!("by_task_and_daily");
-        todo!();
+        let result = self.controller.aggregate_by_task_and_daily(dto).await;
+        tracing::info!("{}", result);
+    }
+
+    pub(super) async fn by_charge_and_total_period(&self, dto: RequestDto) {
+        tracing::debug!("by_charge_and_total_period");
+        let result = self
+            .controller
+            .aggregate_by_charge_and_total_period(dto)
+            .await;
+        tracing::info!("{}", result);
     }
 
     pub(super) async fn by_charge_and_daily(&self, dto: RequestDto) {
         tracing::debug!("by_charge_and_daily");
-        todo!();
+        let result = self.controller.aggregate_by_charge_and_daily(dto).await;
+        tracing::info!("{}", result);
     }
 }
