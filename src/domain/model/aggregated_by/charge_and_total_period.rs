@@ -1,15 +1,15 @@
-use std::{collections::HashMap, ops::Add};
+use std::collections::HashMap;
 
-use chrono::{DateTime, Duration, FixedOffset};
+use chrono::{DateTime, FixedOffset};
 
-use crate::domain::model::{AsVec, DateRange, TaskRecord, TaskRecords};
+use crate::domain::model::{AsVec, DateRange, TaskDuration, TaskRecord, TaskRecords};
 use derive_new::new;
 
 #[derive(new, Debug, Clone, Eq, PartialEq, PartialOrd, Ord)]
 pub(crate) struct ChargeAndTotalPeriodRecord {
     updated_at: DateTime<FixedOffset>,
     charge_name: String,
-    total_duration: Duration,
+    total_duration: TaskDuration,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord)]
@@ -36,7 +36,7 @@ impl ChargeAndTotalPeriodRecords {
                 .unwrap();
             let total_duration = records
                 .iter()
-                .map(|record| record.duration)
+                .map(|record| record.duration.clone())
                 .reduce(|total, duration| total.add(duration))
                 .unwrap();
             aggregated_records.push(ChargeAndTotalPeriodRecord::new(

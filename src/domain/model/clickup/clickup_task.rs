@@ -1,5 +1,5 @@
 use super::values::ClickupDuration;
-use crate::domain::model::{DateRange, Jst, TaskRecord};
+use crate::domain::model::{DateRange, Jst, TaskDuration, TaskRecord};
 
 use chrono::{DateTime, FixedOffset};
 
@@ -50,7 +50,7 @@ impl From<ClickupTask> for TaskRecord {
             task_url: clickup_task.task_url,
             task_status: clickup_task.task_status,
             charge_name: clickup_task.parent_list_name,
-            duration: clickup_task.duration.as_duration(),
+            duration: TaskDuration::new(clickup_task.duration.as_duration()),
             target_date: DateRange::convert_datetime_to_date(clickup_task.updated_at),
             updated_at: clickup_task.updated_at,
         }
