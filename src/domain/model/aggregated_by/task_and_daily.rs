@@ -5,6 +5,7 @@ use chrono::{DateTime, FixedOffset, NaiveDate};
 use crate::domain::model::{AsVec, DateRange, TaskDuration, TaskRecord, TaskRecords};
 use derive_new::new;
 
+#[allow(clippy::too_many_arguments)]
 #[derive(new, Debug, Clone, Eq, PartialEq, PartialOrd, Ord)]
 pub(crate) struct TaskAndDailyRecord {
     target_date: NaiveDate,
