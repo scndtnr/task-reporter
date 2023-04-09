@@ -78,6 +78,8 @@ impl<R: Repositories> AggregateDurationUseCase<R> {
         let records_from_time_entries: TaskRecords = time_entries.into();
         let records = records_from_tasks.concat(&records_from_time_entries);
 
+        tracing::debug!("{:#?}", records);
+
         Ok(records)
     }
 }
