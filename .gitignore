@@ -11,3 +11,9 @@ Cargo.lock
 
 # local history
 .history
+
+# log file
+log
+
+# .env file
+dotenv/.env
