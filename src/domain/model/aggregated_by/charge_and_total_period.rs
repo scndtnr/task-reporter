@@ -8,8 +8,20 @@ use derive_new::new;
 #[derive(new, Debug, Clone, Eq, PartialEq, PartialOrd, Ord)]
 pub(crate) struct ChargeAndTotalPeriodRecord {
     updated_at: DateTime<FixedOffset>,
-    charge_name: String,
     total_duration: TaskDuration,
+    charge_name: String,
+}
+
+impl std::fmt::Display for ChargeAndTotalPeriodRecord {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}\t{}\t{}",
+            self.updated_at.format("%Y/%m/%dT%H:%M:%S"),
+            self.total_duration,
+            self.charge_name,
+        )
+    }
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, PartialOrd, Ord)]
@@ -41,13 +53,45 @@ impl ChargeAndTotalPeriodRecords {
                 .unwrap();
             aggregated_records.push(ChargeAndTotalPeriodRecord::new(
                 latest_record.updated_at,
-                charge_name,
                 total_duration,
+                charge_name,
             ))
         }
         Self {
             date_range,
             records: aggregated_records,
         }
+    }
+}
+
+impl std::fmt::Display for ChargeAndTotalPeriodRecords {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let title = if self.date_range.is_same_date() {
+            format!("集計対象日付：{}", self.date_range.start_date_str())
+        } else {
+            format!(
+                "集計対象期間：{} ～ {}",
+                self.date_range.start_date_str(),
+                self.date_range.end_target_date_str()
+            )
+        };
+
+        // 並び替える
+        let mut records = self.records.clone();
+        records.sort_by_key(|record| (record.charge_name.clone(), record.total_duration.clone()));
+
+        let tsv = records.iter().map(|record| record.to_string()).fold(
+            vec![vec![
+                "updated_at".to_string(),
+                "total_duration".to_string(),
+                "charge_name".to_string(),
+            ]
+            .join("\t")],
+            |mut records, record| {
+                records.push(record);
+                records
+            },
+        );
+        write!(f, "\n{}\n[\n{}\n]", title, tsv.join("\n"))
     }
 }

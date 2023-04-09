@@ -85,7 +85,18 @@ impl std::fmt::Display for TaskAndTotalPeriodRecords {
                 self.date_range.end_target_date_str()
             )
         };
-        let tsv = self.records.iter().map(|record| record.to_string()).fold(
+
+        // 並び替える
+        let mut records = self.records.clone();
+        records.sort_by_key(|record| {
+            (
+                record.charge_name.clone(),
+                record.task_status.clone(),
+                record.total_duration.clone(),
+            )
+        });
+
+        let tsv = records.iter().map(|record| record.to_string()).fold(
             vec![vec![
                 "updated_at".to_string(),
                 "total_duration".to_string(),
