@@ -88,7 +88,7 @@ impl std::fmt::Display for ChargeAndDailyRecords {
             )
         });
 
-        let tsv = records.iter().map(|record| record.to_string()).fold(
+        let mut tsv = records.iter().map(|record| record.to_string()).fold(
             vec![vec![
                 "target_date".to_string(),
                 "updated_at".to_string(),
@@ -101,6 +101,15 @@ impl std::fmt::Display for ChargeAndDailyRecords {
                 records
             },
         );
+        let grand_total = format!(
+            "総合計\t{}",
+            records
+                .into_iter()
+                .map(|record| record.total_duration)
+                .reduce(|accum, duration| accum.add(duration))
+                .expect("Fail to sum duration")
+        );
+        tsv.push(grand_total);
         write!(f, "\n{}\n[\n{}\n]", title, tsv.join("\n"))
     }
 }
