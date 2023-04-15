@@ -24,7 +24,7 @@ impl<'a, U: Usecases> Controller<U> {
     ) -> TaskAndTotalPeriodRecords {
         self.usecases
             .aggregate_duration_use_case()
-            .by_task_and_total_period(dto.start_date().clone(), dto.end_date().clone())
+            .by_task_and_total_period(dto.start_date().clone(), dto.end_date().clone(), dto.all())
             .await
             .expect("Failed to process AggregateDurationUsecase: by_task_and_total_period")
     }
@@ -32,7 +32,7 @@ impl<'a, U: Usecases> Controller<U> {
     pub(crate) async fn aggregate_by_task_and_daily(&self, dto: RequestDto) -> TaskAndDailyRecords {
         self.usecases
             .aggregate_duration_use_case()
-            .by_task_and_daily(dto.start_date().clone(), dto.end_date().clone())
+            .by_task_and_daily(dto.start_date().clone(), dto.end_date().clone(), dto.all())
             .await
             .expect("Failed to process AggregateDurationUsecase: by_task_and_daily")
     }
@@ -43,7 +43,7 @@ impl<'a, U: Usecases> Controller<U> {
     ) -> ChargeAndTotalPeriodRecords {
         self.usecases
             .aggregate_duration_use_case()
-            .by_charge_and_total_period(dto.start_date().clone(), dto.end_date().clone())
+            .by_charge_and_total_period(dto.start_date().clone(), dto.end_date().clone(), dto.all())
             .await
             .expect("Failed to process AggregateDurationUsecase: by_charge_and_total_period")
     }
@@ -54,7 +54,7 @@ impl<'a, U: Usecases> Controller<U> {
     ) -> ChargeAndDailyRecords {
         self.usecases
             .aggregate_duration_use_case()
-            .by_charge_and_daily(dto.start_date().clone(), dto.end_date().clone())
+            .by_charge_and_daily(dto.start_date().clone(), dto.end_date().clone(), dto.all())
             .await
             .expect("Failed to process AggregateDurationUsecase: by_charge_and_daily")
     }

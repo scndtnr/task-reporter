@@ -14,11 +14,29 @@ pub(crate) struct Opts {
     start_date: Option<String>,
     #[clap(help = "終端日をYYYY/MM/DD形式で指定する")]
     end_date: Option<String>,
-    #[clap(short = 'c', long, help = "チャージコード単位で集計するboolフラグ")]
+    #[clap(
+        short = 'c',
+        long,
+        help = "デフォルトではタスク単位で集計する。このフラグを指定すると、チャージコード単位で集計する"
+    )]
     by_charge: bool,
-    #[clap(short = 'd', long, help = "日単位で集計するboolフラグ")]
+    #[clap(
+        short = 'd',
+        long,
+        help = "デフォルトでは対象期間単位で集計する。このフラグを指定すると、日単位で集計する"
+    )]
     by_daily: bool,
-    #[clap(short = 's', long, help = "結果をクリップボードにセットするboolフラグ")]
+    #[clap(
+        short = 'a',
+        long,
+        help = "デフォルトでは対象期間内のタイムエントリーのみを表示する。このフラグを指定すると、最終更新日時が対象期間内であるタスク情報も表示する"
+    )]
+    all: bool,
+    #[clap(
+        short = 's',
+        long,
+        help = "このフラグを指定すると、結果をクリップボードにセットする"
+    )]
     set_clipboard: bool,
 }
 
@@ -34,6 +52,9 @@ impl Opts {
     }
     pub(crate) fn by_daily(&self) -> bool {
         self.by_daily
+    }
+    pub(crate) fn all(&self) -> bool {
+        self.all
     }
     pub(crate) fn set_clipboard(&self) -> bool {
         self.set_clipboard
