@@ -1,4 +1,5 @@
 # task-reporter
+
 タスク管理ツールからタスク毎の所要時間を取得し、集計して表示するCLIツール
 
 # 要件
@@ -21,6 +22,7 @@
     - 所要時間（hh:mi:ss表記）
 - 出力形式は、対象日あるいは対象期間は別枠とし、他はTSV形式とする
 - 出力TSVの末尾には所要時間の総合計を表示する
+- オプション指定によって、出力結果をクリップボードにコピーできる
 
 
 # 利用前の準備
@@ -32,27 +34,28 @@
 
 # Usage
 
-結果は標準出力に表示される。
-また、クリップボードにもコピーされる（Windowsのみ対応）
+このリポジトリをクローンして利用する場合を想定しているため、
+下記 `task-reporter.exe` は `task-reporter.bat` に読み替えること。
 
 ```ps1
-# 1日単位（対象期間は1日のみ）、タスク毎
-task-repoter.bat <yyyy/mm/dd>
+Task Reporter 0.1.0
+zumi
+This is a CLI tool that aggregates and displays work hours collected from a task management app by
+charge or task.
 
-# 1日単位（対象期間は1日のみ）、チャージ毎
-task-repoter.bat <yyyy/mm/dd> --by-charge
+USAGE:
+    task-reporter.exe [OPTIONS] [ARGS]
 
-# 1日単位（対象期間は複数日に渡る）、タスク毎
-task-repoter.bat <yyyy/mm/dd> <yyyy/mm/dd> --by-daily
+ARGS:
+    <START_DATE>    始端日をYYYY/MM/DD形式で指定する
+    <END_DATE>      終端日をYYYY/MM/DD形式で指定する
 
-# 1日単位（対象期間は複数日に渡る）、チャージ毎
-task-repoter.bat <yyyy/mm/dd> <yyyy/mm/dd> --by-daily --by-charge
-
-# 対象期間単位（対象期間は複数日に渡る）、タスク毎
-task-repoter.bat <yyyy/mm/dd> <yyyy/mm/dd> 
-
-# 対象期間単位（対象期間は複数日に渡る）、チャージ毎
-task-repoter.bat <yyyy/mm/dd> <yyyy/mm/dd> --by-charge
+OPTIONS:
+    -c, --by-charge        チャージコード単位で集計するboolフラグ
+    -d, --by-daily         日単位で集計するboolフラグ
+    -h, --help             Print help information
+    -s, --set-clipboard    結果をクリップボードにセットするboolフラグ
+    -V, --version          Print version information
 ```
 
 
