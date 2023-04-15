@@ -4,14 +4,20 @@ use chrono::Duration;
 pub(crate) struct TaskDuration(Duration);
 
 impl TaskDuration {
-    pub fn new(duration: Duration) -> Self {
-        Self(duration)
+    pub fn new() -> Self {
+        Self(Duration::zero())
     }
     pub fn as_duration(&self) -> Duration {
         self.0
     }
     pub fn add(&self, other: TaskDuration) -> Self {
         Self(self.as_duration() + other.as_duration())
+    }
+}
+
+impl From<Duration> for TaskDuration {
+    fn from(duration: Duration) -> Self {
+        Self(duration)
     }
 }
 

@@ -56,7 +56,7 @@ impl From<ClickupTimeEntry> for TaskRecord {
             task_url: clickup_time_entry.task_url,
             task_status: clickup_time_entry.task_status,
             charge_name: clickup_time_entry.parent_list_name,
-            duration: TaskDuration::new(clickup_time_entry.duration),
+            duration: TaskDuration::from(clickup_time_entry.duration),
             // 開始時点の日時で対象日付を判定する
             target_date: DateRange::convert_datetime_to_date(clickup_time_entry.start),
             // 更新日時は終了時点のものを採用する

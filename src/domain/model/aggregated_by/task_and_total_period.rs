@@ -115,8 +115,7 @@ impl std::fmt::Display for TaskAndTotalPeriodRecords {
             records
                 .into_iter()
                 .map(|record| record.total_duration)
-                .reduce(|accum, duration| accum.add(duration))
-                .expect("Fail to sum duration")
+                .fold(TaskDuration::new(), |accum, duration| accum.add(duration))
         );
         tsv.push(grand_total);
         write!(f, "\n{}\n[\n{}\n]", title, tsv.join("\n"))
