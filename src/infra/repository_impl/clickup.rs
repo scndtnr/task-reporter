@@ -26,6 +26,15 @@ impl<T> ClickupRepositoryImpl<T> {
     }
 }
 
+/// ClickUp API v2 の 日時範囲指定パラメータ start は、
+/// linuxtime(ミリ秒) が一致するデータは取得しない挙動をしている。
+/// つまり「start <= target」 ではなく 「start < target」と思われる
+/// 本CLIではstartが一致するデータも取得したいので、パラメータから1ミリ秒引いておく
+/// https://clickup.com/api/clickupreference/operation/Gettimeentrieswithinadaterange/
+fn clickup_date_start_milles(date_range: &DateRange) -> i64 {
+    date_range.start().timestamp_millis() - 1
+}
+
 #[async_trait]
 impl ClickupTaskRepository for ClickupRepositoryImpl<ClickupTask> {
     #[tracing::instrument(
@@ -52,7 +61,7 @@ impl ClickupTaskRepository for ClickupRepositoryImpl<ClickupTask> {
                 page,
                 true,
                 true,
-                date_range.start().timestamp_millis(),
+                clickup_date_start_milles(date_range),
                 date_range.end().timestamp_millis(),
             );
             let resp = self.client.api().filtered_team_tasks(Some(params)).await;
@@ -101,7 +110,7 @@ impl ClickupTimeEntryRepository for ClickupRepositoryImpl<ClickupTimeEntry> {
     ) -> Result<ClickupTimeEntries> {
         let params = self.client.params().time_entries_within_a_date_range(
             true,
-            date_range.start().timestamp_millis(),
+            clickup_date_start_milles(date_range),
             date_range.end().timestamp_millis(),
         );
         let resp = self
