@@ -125,7 +125,7 @@ pub(crate) trait BasicClientApi: BasicProperty {
     }
 }
 
-//// 各サービス毎に更新までの残り秒数を取得し、その秒数＋5秒待機する。
+/// 各サービス毎に更新までの残り秒数を取得し、その秒数＋5秒待機する。
 /// 残り秒数を取得できない場合は60秒+5秒待機する。  
 async fn send_request_retry_on_too_many_requests(builder: RequestBuilder) -> Response {
     loop {
