@@ -19,7 +19,7 @@ pub(crate) trait ToQueryString {
         let s = serde_json::to_string(self).unwrap();
         let mut m: HashMap<String, Option<String>> = serde_json::from_str(&s).unwrap();
         // query string用パラメータなので、階層構造は存在しないものとする
-        let v: Vec<(String, Option<String>)> = m.drain().map(|(k, v)| (k, v)).collect();
+        let v: Vec<(String, Option<String>)> = m.drain().collect();
         ApiParams::QueryString(v)
     }
 }
