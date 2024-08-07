@@ -102,7 +102,7 @@ impl std::fmt::Display for TaskAndDailyRecords {
         });
 
         let mut tsv = records.iter().map(|record| record.to_string()).fold(
-            vec![vec![
+            vec![[
                 "target_date".to_string(),
                 "updated_at".to_string(),
                 "total_duration".to_string(),

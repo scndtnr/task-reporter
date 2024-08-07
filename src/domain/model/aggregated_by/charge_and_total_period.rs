@@ -81,7 +81,7 @@ impl std::fmt::Display for ChargeAndTotalPeriodRecords {
         records.sort_by_key(|record| (record.charge_name.clone(), record.total_duration.clone()));
 
         let mut tsv = records.iter().map(|record| record.to_string()).fold(
-            vec![vec![
+            vec![[
                 "updated_at".to_string(),
                 "total_duration".to_string(),
                 "charge_name".to_string(),

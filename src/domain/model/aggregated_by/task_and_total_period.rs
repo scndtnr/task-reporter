@@ -97,7 +97,7 @@ impl std::fmt::Display for TaskAndTotalPeriodRecords {
         });
 
         let mut tsv = records.iter().map(|record| record.to_string()).fold(
-            vec![vec![
+            vec![[
                 "updated_at".to_string(),
                 "total_duration".to_string(),
                 "charge_name".to_string(),
